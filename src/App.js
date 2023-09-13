@@ -1,22 +1,34 @@
-import logo from './logo.svg';
+import React, { useState, useCallback, memo } from 'react';
 import './App.css';
 
+const ShowCount = memo(({ text, count }) => {
+  console.log(`Rendering ${text}`);
+  return <div>{text}: {count}</div>;
+});
+
 function App() {
+  const [count, setCount] = useState(0);
+  const [otherCount, setOtherCount] = useState(0);
+
+  const incrementCount = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  const incrementOtherCount = useCallback(() => {
+    setOtherCount(otherCount + 1);
+  }, [otherCount]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={incrementCount}>
+          Increment Count
+        </button>
+        <button onClick={incrementOtherCount}>
+          Increment Other Count
+        </button>
+        <ShowCount text="Count" count={count} />
+        <ShowCount text="Other Count" count={otherCount} />
       </header>
     </div>
   );
